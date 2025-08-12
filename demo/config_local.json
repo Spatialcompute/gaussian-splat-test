@@ -1,6 +1,6 @@
 {
   "MODEL_URL": "https://minio.node1.3dinteractive.cloud/public-bucket/a08_full.dat",
-  "MAX_FRAME": 1805,
+  "MAX_FRAME": 1800,
   "SLICE_NUM": 5,
   "TOTAL_CAP": 100000,
   "STREAM_ROW_LENGTH": 36,
