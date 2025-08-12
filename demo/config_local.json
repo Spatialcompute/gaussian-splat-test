@@ -1,5 +1,5 @@
 {
-  "MODEL_URL": "https://minio.node1.3dinteractive.cloud/public-bucket/a08_full.dat",
+  "MODEL_URL": "https://8b5694700baa3c95a05876b3f0f40b89.r2.cloudflarestorage.com/4dgs/a08_full.dat",
   "MAX_FRAME": 1800,
   "PREFETCH_SEC": 1,
   "SLICE_NUM": 5,
