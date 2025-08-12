@@ -1,5 +1,5 @@
 {
-  "MODEL_URL": "https://8b5694700baa3c95a05876b3f0f40b89.r2.cloudflarestorage.com/4dgs/a08_full.dat",
+  "MODEL_URL": "https://pub-1b354c6d34814278bd76eb529fd6bd8f.r2.dev/a08_full.dat",
   "MAX_FRAME": 1800,
   "PREFETCH_SEC": 1,
   "SLICE_NUM": 5,
