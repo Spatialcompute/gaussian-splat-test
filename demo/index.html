@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>WebGL SwinGS Viewer</title>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+		/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta
+			name="apple-mobile-web-app-status-bar-style"
+			content="black-translucent"
+		/>
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<script>
+			if(location.host.includes('hf.space')) document.body.classList.add('nohf');
+		</script>
+		<div id="info">
+			<h3 class="nohf">WebGL SwinGS Viewer</h3>
+			<p>
+			<small class="nohf">
+				By SwinGS group, codes at <a href="https://github.com/SwinGSplat/demo" target="_blank">SwinGSplat</a>
+				<br />Modified from
+				<a href="https://github.com/antimatter15/splat" target="_blank">antimatter15/splat</a>.
+				<br />Dataset from <a href="https://www.actors-hq.com/" target="_blank">ActorsHQ</a>.
+				<br /><a href="javascript:void(0)">Minimal <span id="min_bw">22</span>MB/s bandwidth expected.</a>
+			</small>
+		</p>
+
+			<details>
+				<summary>Use mouse or arrow keys to navigate.</summary>
+
+				<div id="instructions">movement (arrow keys)
+- left/right arrow keys to strafe side to side
+- up/down arrow keys to move forward/back
+- space to jump
+
+camera angle (wasd)
+- a/d to turn camera left/right
+- w/s to tilt camera up/down
+- q/e to roll camera counterclockwise/clockwise
+- i/k and j/l to orbit
+
+trackpad
+- scroll up/down/left/right to orbit
+- pinch to move forward/back
+- ctrl key + scroll to move forward/back
+- shift + scroll to move up/down or strafe
+
+mouse
+- click and drag to orbit
+- right click (or ctrl/cmd key) and drag up/down to move
+
+touch (mobile)
+- one finger to orbit
+- two finger pinch to move forward/back
+- two finger rotate to rotate camera clockwise/counterclockwise
+- two finger pan to move side-to-side and up-down
+
+gamepad
+- if you have a game controller connected it should work
+
+other
+- press 0-9 to switch to one of the pre-loaded camera views
+- press '-' or '+'key to cycle loaded cameras
+				</div>
+
+		</details>
+			
+		</div>
+
+		<div id="progress"></div>
+
+		<div id="message"></div>
+		<div class="scene" id="spinner">
+			<div class="cube-wrapper">
+				<div class="cube">
+					<div class="cube-faces">
+						<div class="cube-face bottom"></div>
+						<div class="cube-face top"></div>
+						<div class="cube-face left"></div>
+						<div class="cube-face right"></div>
+						<div class="cube-face back"></div>
+						<div class="cube-face front"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<canvas id="canvas"></canvas>
+
+		<div id="quality">
+			<div>
+				<label>Select Model:</label><br/>
+				<select id="scene_name">
+					<option value="default">default (22MBps)</option>
+					<option value="cook_spinach">cook_spinach (44MBps)</option>
+					<option value="cut_beef">cut_beef (44MBps)</option>
+					<option value="sear_steak">sear_steak (44MBps)</option>
+				</select>
+				<br><br>
+			</div>
+			<span id="pause" class="control-btn">⏸️ Pause</span> <br /> 
+			<span id="reset_cam" class="control-btn">🔄 Reset Cam</span> <br />
+			<br />
+			frame: <span id="frame">0</span> <br />
+			stream fps: <span id="FPS">0</span><br />
+			render fps: <span id="fps"></span>
+		</div>
+		<div id="caminfo">
+			<span id="camid"></span>
+		</div>
+		<div class="progress-container">
+			<div class="progress-container-inner">
+			<div class="progress-buffered" id="progress-buffered"></div>
+			<div class="progress-current" id="progress-current"></div>
+			</div>	
+		</div>
+
+		<script src="main.js"></script>
+		
+	</body>
+</html>
