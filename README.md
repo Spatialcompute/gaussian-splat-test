@@ -1,27 +1,57 @@
-# Splat Streaming Demo (Local + Throttled Server)
+# Splat Streaming Demo
 
-This project wraps the SwinGS viewer with a throttled Node server so local `.dat` playback behaves like remote streaming.
+Viewer for streaming compact 36B `.dat` splats (SwinGS viewer vendored in `demo/`).
 
 References: [SwinGSplat/demo](https://github.com/SwinGSplat/demo)
 
-## Run locally
+## Local run (simple)
 
 ```bash
-# Python venv for converter tools (optional)
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+cd demo
+python3 -m http.server 8080
+# open http://localhost:8080/
+```
 
-# Start throttled Node server (default ~25 Mbps)
+- Edit `demo/config_local.json` and set `MODEL_URL` to either:
+  - `data/your.dat` (same-origin, no CORS issues), or
+  - A remote URL (requires CORS enabled on that host)
+- Tuning:
+  - `TOTAL_CAP`: 50k–150k for startup speed
+  - `SLICE_NUM`: 5–10 for temporal continuity (watch `SLICE_CAP = TOTAL_CAP/SLICE_NUM`)
+  - `PREFETCH_SEC`: 0.5–1.5 to reduce stutter
+  - `MAX_FRAME`: match your file (e.g., 1800)
+
+## Hosting the `.dat` on Cloudflare R2
+
+- We store the dataset in Cloudflare R2 public bucket (e.g. `https://<pub>.r2.dev/a08_full.dat`).
+- Ensure the object is public and CORS allows your app origin(s):
+  - Access-Control-Allow-Origin: your site(s) (e.g., `https://your.app`, `http://localhost:8080`)
+  - Access-Control-Allow-Methods: GET, HEAD
+  - Access-Control-Allow-Headers: *
+  - Access-Control-Expose-Headers: Content-Length, Content-Range, Accept-Ranges, ETag
+  - Access-Control-Max-Age: 86400
+- If CORS is not set, browsers will block cross-origin streaming.
+
+## Deploy on Coolify (Nixpacks)
+
+- Repo contains a `Procfile` and `nixpacks.toml` so Nixpacks knows the start command.
+- Start command serves the viewer statically from `demo/`:
+  - Procfile: `web: sh -c 'cd demo && python3 -m http.server ${PORT:-8080}'`
+- Steps:
+  1) Connect the repo in Coolify
+  2) App type: Static/Node (Nixpacks will pick Python due to `requirements.txt` but we use the Procfile’s start)
+  3) Expose the PORT you configured
+  4) Redeploy
+
+## Optional throttled server (dev only)
+
+We include `server/server.js` (Express + compression) to emulate remote bandwidth and avoid local burst artifacts.
+
+```bash
 cd server
 npm i
 THROTTLE_MBPS=25 node server.js
 # open http://localhost:8080/demo/
 ```
 
-- Place your `.dat` under `demo/data/` and ensure `demo/config_local.json` points to it (MODEL_URL).
-- To start playing sooner, reduce `TOTAL_CAP` in `demo/config_local.json` (e.g., 50k–100k).
-
-## Deploy (Coolify/GitHub)
-- Deploy as a Node app; start command: `node server/server.js`
-- Optional env: `THROTTLE_MBPS` to control bandwidth
-- Do not commit big `.dat` files; host them separately or mount a volume.
+Use only if you need to mimic remote streaming locally; otherwise, the simple static server is fine.
